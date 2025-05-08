@@ -1,0 +1,51 @@
+// index.js
+
+const express = require('express');
+const axios = require('axios');
+const app = express();
+
+app.use(express.json());
+
+const Z_API_TOKEN = 'SUA_CHAVE_DA_ZAPI'; // Substitua pela sua chave Z-API
+const Z_API_URL = 'https://api.z-api.io/instances/SUA_INSTANCIA/token/SUA_CHAVE_DA_ZAPI/send-text';
+
+async function enviarMensagem(telefone, mensagem) {
+  try {
+    await axios.post(Z_API_URL, {
+      phone: telefone,
+      message: mensagem
+    });
+  } catch (error) {
+    console.error('Erro ao enviar mensagem:', error.response?.data || error.message);
+  }
+}
+
+app.post('/webhook', async (req, res) => {
+  const mensagem = req.body;
+
+  const telefone = mensagem.phone;
+  const msg = mensagem.message.toLowerCase();
+
+  if (msg.includes('menu') || msg === 'oi' || msg === 'olá') {
+    await enviarMensagem(telefone, `🎉 *Banda Forró das Antigas* 🎶\n\nEm qual tipo de evento você quer contratar a banda?\n\n1️⃣ - Casamento 💍\n2️⃣ - Aniversário 🎂\n3️⃣ - Festa Junina 🎊\n4️⃣ - Evento Corporativo 🏢\n5️⃣ - Ver vídeos da banda 🎥\n6️⃣ - Falar com um atendente 👤`);
+  } else if (msg === '1') {
+    await enviarMensagem(telefone, '💍 Casamentos são especiais! Tocamos forró romântico e animado. Envie a data e local para receber um orçamento exclusivo.');
+  } else if (msg === '2') {
+    await enviarMensagem(telefone, '🎂 Aniversário com forró é alegria garantida! Nos diga o dia, cidade e número de convidados para fazermos um orçamento.');
+  } else if (msg === '3') {
+    await enviarMensagem(telefone, '🎊 Adoramos festa junina! Quadrilha, forró pé de serra e clássicos das antigas. Mande os detalhes do evento para orçamento!');
+  } else if (msg === '4') {
+    await enviarMensagem(telefone, '🏢 Para eventos corporativos, oferecemos um show animado e profissional para confraternizações, SIPAT, premiações e mais. Envie local, data e tipo do evento para orçamento.');
+  } else if (msg === '5') {
+    await enviarMensagem(telefone, '🎥 Veja nossos vídeos no YouTube: https://youtube.com/sua-banda');
+  } else if (msg === '6') {
+    await enviarMensagem(telefone, '👤 Um atendente vai falar com você em instantes pelo WhatsApp!');
+  } else {
+    await enviarMensagem(telefone, 'Não entendi 😕. Digite *menu* para ver as opções.');
+  }
+
+  res.sendStatus(200);
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
