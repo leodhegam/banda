@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: chatbot-banda
+    env: node
+    plan: free
+    buildCommand: ""
+    startCommand: node index.js
+    autoDeploy: true
+    envVars:
+      - key: https://api.z-api.io/instances/3E0E55D43765B06F8F4396870211A73F/token/845113E139DAD69E70DA7D16/send-text
+        value: 845113E139DAD69E70DA7D16
