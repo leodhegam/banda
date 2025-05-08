@@ -6,8 +6,8 @@ const app = express();
 
 app.use(express.json());
 
-const Z_API_TOKEN = 'SUA_CHAVE_DA_ZAPI'; // Substitua pela sua chave Z-API
-const Z_API_URL = 'https://api.z-api.io/instances/SUA_INSTANCIA/token/SUA_CHAVE_DA_ZAPI/send-text';
+const Z_API_TOKEN = '845113E139DAD69E70DA7D16'; // Substitua pela sua chave Z-API
+const Z_API_URL = 'https://api.z-api.io/instances/3E0E55D43765B06F8F4396870211A73F/token/845113E139DAD69E70DA7D16/send-text';
 
 async function enviarMensagem(telefone, mensagem) {
   try {
